@@ -24,7 +24,7 @@ int odbierz[2];
 
 MPI_Status mpi_status;
 
-void Wyslij(int numer_a, int stan) //wyslij do lotniska swoj stan
+void Wyslij(int numer_a, int stan) //wyslij do zoo stan woliera
 {
 	wyslij[0]=numer_a;
 	wyslij[1]=stan;
