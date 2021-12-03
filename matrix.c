@@ -38,10 +38,8 @@ int main (int argc, char** argv) {
     MPI_Type_vector(size, 1, size+1, MPI_INT,&diag);
     MPI_Type_commit(&diag);
 	
-	
     MPI_Gather(matrix, 1, diag, matrix, size, MPI_INT, 0, MPI_COMM_WORLD);
 
-    
     if (nr_proc == 0) {
        printf("Process nr-0 -> matrix after communication:\n");
        for (int i = 0; i < size; i++) {
