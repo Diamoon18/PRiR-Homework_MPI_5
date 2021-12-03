@@ -44,7 +44,7 @@ void Aviaries(char **animals) {
 			}
       ...
 ```
-4)Function Zoo -> decides how many aviaries there will be; takes the status of aviaries (MPI_Recv)
+4) Function Zoo -> decides how many aviaries there will be; takes the status of aviaries (MPI_Recv)
 ```c
 void Zoo(int liczba_procesow) {
 	int numer_a, status;
