@@ -8,12 +8,10 @@ int main (int argc, char** argv) {
     int nr_proc, size;
     MPI_Datatype diag;
 
-    /* MPI Initialization */
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &nr_proc);
 
-    /* Matrix initialization */
     int matrix[size][size];
 
     for (int i = 0; i < size; i++){
@@ -23,9 +21,8 @@ int main (int argc, char** argv) {
  	        else 
                 matrix[i][j] = 0;
         }
-	}
+     }
 	
-    /* Print rank 0 matrix (should be filled with 0s) */
     if (nr_proc == 0) {
        printf("Process nr-0 -> matrix before communication:\n");
        for (int i = 0; i < size; i++) {
@@ -46,7 +43,7 @@ int main (int argc, char** argv) {
      * contiguously in the receiving matrix */
     MPI_Gather(matrix, 1, diag, matrix, size, MPI_INT, 0, MPI_COMM_WORLD);
 
-    /* Print rank 0 matrix after communication (each element should be its row number) */
+    
     if (nr_proc == 0) {
        printf("Process nr-0 -> matrix after communication:\n");
        for (int i = 0; i < size; i++) {
@@ -58,7 +55,7 @@ int main (int argc, char** argv) {
        printf("\n");
     }
 
-    /* Remember to free the datatype! */
+    /* free the datatype */
     MPI_Type_free(&diag);
     MPI_Finalize();
     return 0;
