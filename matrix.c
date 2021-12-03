@@ -34,13 +34,11 @@ int main (int argc, char** argv) {
        printf("\n"); 
     }
 
-    /* Diagonal datatype vector creation */
+  
     MPI_Type_vector(size, 1, size+1, MPI_INT,&diag);
     MPI_Type_commit(&diag);
-
-    /* Communication: rank 0 gathers all the diagonals from the other ranks and stores them in the row corresponding to the
-     * sending rank. Note that 1 "diag" type is sent and size MPI_INT types are received, so that the values can be stored
-     * contiguously in the receiving matrix */
+	
+	
     MPI_Gather(matrix, 1, diag, matrix, size, MPI_INT, 0, MPI_COMM_WORLD);
 
     
@@ -55,7 +53,6 @@ int main (int argc, char** argv) {
        printf("\n");
     }
 
-    /* free the datatype */
     MPI_Type_free(&diag);
     MPI_Finalize();
     return 0;
