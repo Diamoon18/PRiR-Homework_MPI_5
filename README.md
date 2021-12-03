@@ -99,12 +99,71 @@ int main(int argc, char** argv) {
 ![zoo2](https://user-images.githubusercontent.com/72127610/144656960-98dbcc4f-05a1-43ae-bc68-5fd3b17ffa08.jpg)
 ![zoo3](https://user-images.githubusercontent.com/72127610/144656977-8341d20c-a40c-4b6a-9c25-ef8baaede9b4.jpg)
 ### ``` matrix.c ``` - task 2 - generation of a matrix from other matrix witn MPI
-Each process generates a square matrix with the size NxN (where N - number of pocesses), where all elements of the matrix are zeros except the diagonal.\
+Each process generates a square matrix with the size NxN (where N - number of pocesses), where all elements are zeros except the diagonal.\
 Fill in the matrix elements diagonally by the process number.\
 Each process sends array of elements diagonally to the zero process.\
 In zero process -> overwrite the table sent by i-process in the i-th line in matrix.\
 Finally, process number-0 prints it's final matrix, where each element should be it's row number.
-#### Results
+1) MPI Initialization
+```c
+MPI_Init(&argc, &argv);
+MPI_Comm_size(MPI_COMM_WORLD, &size);
+MPI_Comm_rank(MPI_COMM_WORLD, &nr_proc);
+...
+```
+2) Matrix initialization
+```c
+ int matrix[size][size];
+
+for (int i = 0; i < size; i++){
+	for (int j = 0; j < size; j++){
+		if (i==j) 
+		    matrix[i][j] = nr_proc;
+		else 
+		    matrix[i][j] = 0;
+	}
+}
+```
+3) Print process nr-0 matrix
+```c
+if (nr_proc == 0) {
+       printf("Process nr-0 -> matrix before communication:\n");
+       for (int i = 0; i < size; i++) {
+           for (int j = 0; j < size; j++){
+               printf("%d ", matrix[i][j]);
+           }
+           printf("\n");
+       }
+       printf("\n"); 
+}
+```
+4) Diagonal datatype vector creation; Commits a datatype.
+```c
+ MPI_Type_vector(size, 1, size+1, MPI_INT, &diag);
+ MPI_Type_commit(&diag);
+```
+5) Process nr-0 collects all diagonals from other processes and stores them in a row corresponding to the sending process.
+```c
+MPI_Gather(matrix, 1, diag, matrix, size, MPI_INT, 0, MPI_COMM_WORLD);
+```
+6) Print process nr-0 result_matrix (each element should be its row number)
+```c
+if (nr_proc == 0) {
+       printf("Process nr-0 -> matrix after communication:\n");
+       for (int i = 0; i < size; i++) {
+           for (int j = 0; j < size; j++){
+                printf("%d ", matrix[i][j]);
+           }
+           printf("\n");
+       }
+       printf("\n");
+}
+```
+7) Free the datatype; Finish work in MPI
+```c
+MPI_Type_free(&diag);
+MPI_Finalize();
+```
 ![matrix](https://user-images.githubusercontent.com/72127610/144657086-feb56770-24f0-43bf-9583-2da06cfddea1.jpg)
 
 
