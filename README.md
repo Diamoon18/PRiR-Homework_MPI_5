@@ -94,5 +94,17 @@ int main(int argc, char** argv) {
 	return 0;
 }
 ```
-### ``` matrix.c ``` - task 2 - generation of a matrix from other matrix
-#### 
+#### Results
+![zoo1](https://user-images.githubusercontent.com/72127610/144656936-1292ea5a-f1fe-4d82-a380-b3d678ace582.jpg)
+![zoo2](https://user-images.githubusercontent.com/72127610/144656960-98dbcc4f-05a1-43ae-bc68-5fd3b17ffa08.jpg)
+![zoo3](https://user-images.githubusercontent.com/72127610/144656977-8341d20c-a40c-4b6a-9c25-ef8baaede9b4.jpg)
+### ``` matrix.c ``` - task 2 - generation of a matrix from other matrix witn MPI
+Each process generates a square matrix with the size NxN (where N - number of pocesses), where all elements of the matrix are zeros except the diagonal.\
+Fill in the matrix elements diagonally by the process number.\
+Each process sends array of elements diagonally to the zero process.\
+In zero process -> overwrite the table sent by i-process in the i-th line in matrix.\
+Finally, process number-0 prints it's final matrix, where each element should be it's row number.
+#### Results
+![matrix](https://user-images.githubusercontent.com/72127610/144657086-feb56770-24f0-43bf-9583-2da06cfddea1.jpg)
+
+
