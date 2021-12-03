@@ -68,5 +68,31 @@ void Zoo(int liczba_procesow) {
 		}
     ...
 ```
+5) MPI initialization; 
+6) The first process is responsible for the zoo; others processes for aviaries
+```c
+int main(int argc, char** argv) {
+    
+	MPI_Init(&argc, &argv);
+	MPI_Comm_rank(MPI_COMM_WORLD,&nr_procesu);
+	MPI_Comm_size(MPI_COMM_WORLD,&liczba_procesow);
+    
+    char *animals[NUMBER_OF_STRING] = 
+    {
+        "Spiders", "Flamingo", "Owls", "Sparrows", "Horses",
+        "Lions", "Gazelle", "Rabbits", "Hawks", "Snakes",
+        "Cockatoos", "Wolfs", "Foxes", "Butterflies"
+    };
+	
+	if(nr_procesu == 0){
+		Zoo(liczba_procesow);
+	}else{
+        	srand(time(NULL));
+		Aviaries(animals);
+    }
+	MPI_Finalize();
+	return 0;
+}
+```
 ### ``` matrix.c ``` - task 2 - generation of a matrix from other matrix
 #### 
